@@ -5,12 +5,13 @@ import javafx.scene.input.*;
 import javafx.application.Application; 
 import javafx.scene.Group; 
 import javafx.scene.Scene;
-import javafx.scene.control.ContextMenu;
+//import javafx.scene.control.ContextMenu;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import com.marquee.text.handlers.PlayPauseHandler;
+import com.marquee.text.handlers.SpeedHandler;
 
 import javafx.animation.TranslateTransition; 
 import javafx.util.Duration; 
@@ -20,13 +21,10 @@ import javafx.scene.text.Font;
 
 public class MarqueeText extends Application{
 	
-	private boolean paused = false;
-	private int speed = 1000;
-	
 	@Override
 	public void start(Stage stage) throws Exception {
 		//TextFlow textFlow = new TextFlow();
-		ContextMenu contextMenu = new ContextMenu();
+		//ContextMenu contextMenu = new ContextMenu();
 		Text text = new Text();
 		Text text2 = new Text();
 		
@@ -54,60 +52,19 @@ public class MarqueeText extends Application{
 		
 		
 		TranslateTransition translateTransition = new TranslateTransition();
-		
-		translateTransition.setDuration(Duration.millis(speed));
-		
-		translateTransition.setNode(text);
-		
-		translateTransition.setByX(text.getLayoutBounds().getWidth() + 600);
-		
-		translateTransition.setCycleCount(-1);
-		
-		translateTransition.setAutoReverse(false);
-		
-		translateTransition.play();
-		
-		EventHandler<MouseEvent> eventHandler = new EventHandler<MouseEvent>() {
-			@Override
-			public void handle(MouseEvent event) {
-				text.setFill(Color.DEEPPINK);
-			}
-			
-		};
-		
+		SpeedHandler spHandler = new SpeedHandler(translateTransition);
 		PlayPauseHandler playPause = new PlayPauseHandler(translateTransition);
 		
-		EventHandler<MouseEvent> eventHandler2 = new EventHandler<MouseEvent>() {
-			@Override
-			public void handle(MouseEvent event) {
-				if(!paused) {
-					translateTransition.pause();
-					paused = true;
-				}else {
-					translateTransition.play();
-					paused = false;
-				}
-			}
-		};
+		translateTransition.setDuration(Duration.millis(spHandler.getSpeed()));
+		translateTransition.setNode(text);
+		translateTransition.setByX(text.getLayoutBounds().getWidth() + 600);
+		translateTransition.setCycleCount(-1);
+		translateTransition.setAutoReverse(false);
+		translateTransition.play();
 		
-		EventHandler<ScrollEvent> eventHandler3 = new EventHandler<ScrollEvent>() {
-			@Override
-			public void handle(ScrollEvent event) {
-				if(event.getDeltaY() < 0 && speed > 0) {
-					speed -= 100;
-				}else if(event.getDeltaY() > 0){
-					speed += 100;
-				}
-				System.out.println("Speed: " + speed);
-				translateTransition.stop();
-				translateTransition.setDuration(Duration.millis(speed));
-				translateTransition.setFromX(0); translateTransition.play();
-			}
-		};
-		
-		stage.addEventFilter(MouseEvent.MOUSE_CLICKED, eventHandler);
+		//stage.addEventFilter(MouseEvent.MOUSE_CLICKED, eventHandler);
 		stage.addEventFilter(MouseEvent.MOUSE_CLICKED, playPause);
-		stage.addEventFilter(ScrollEvent.ANY, eventHandler3);
+		stage.addEventFilter(ScrollEvent.ANY, spHandler);
 		
 		Group root = new Group(text);
 		
