@@ -18,7 +18,7 @@ public class MarqueeImage extends Application {
    @Override 
    public void start(Stage stage) throws FileNotFoundException {         
       //Creating an image 
-      Image image = new Image(new FileInputStream("D:\\Pictures\\ash\\ash.jpg"));  
+      Image image = new Image(new FileInputStream(""));  
       
       //Setting the image view 
       ImageView imageView = new ImageView(image); 
