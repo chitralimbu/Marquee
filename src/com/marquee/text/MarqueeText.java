@@ -9,6 +9,9 @@ import javafx.scene.control.ContextMenu;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+
+import com.marquee.text.handlers.PlayPauseHandler;
+
 import javafx.animation.TranslateTransition; 
 import javafx.util.Duration; 
 import javafx.scene.text.FontPosture; 
@@ -72,6 +75,8 @@ public class MarqueeText extends Application{
 			
 		};
 		
+		PlayPauseHandler playPause = new PlayPauseHandler(translateTransition);
+		
 		EventHandler<MouseEvent> eventHandler2 = new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
@@ -101,7 +106,7 @@ public class MarqueeText extends Application{
 		};
 		
 		stage.addEventFilter(MouseEvent.MOUSE_CLICKED, eventHandler);
-		stage.addEventFilter(MouseEvent.MOUSE_CLICKED, eventHandler2);
+		stage.addEventFilter(MouseEvent.MOUSE_CLICKED, playPause);
 		stage.addEventFilter(ScrollEvent.ANY, eventHandler3);
 		
 		Group root = new Group(text);
