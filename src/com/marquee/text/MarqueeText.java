@@ -11,7 +11,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-
+import javafx.animation.Interpolator;
 import com.marquee.text.handlers.PlayPauseHandler;
 import com.marquee.text.handlers.SpeedHandler;
 
@@ -30,7 +30,7 @@ public class MarqueeText extends Application{
 	private Group root;
 	private Scene scene;
 	private Rectangle2D primScreenBounds = Screen.getPrimary().getVisualBounds();
-	Font font = Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 40);
+	Font font = Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 30);
 	
 	@Override
 	public void start(Stage stage) throws Exception {
@@ -39,7 +39,7 @@ public class MarqueeText extends Application{
 		text.setFont(font);
 		text.setText("In our ProductController class, we only have the ProductRepository reference to access the Product domain object within the list method. But accessing ProductRepository directly from the ProductController is not the best practice, as it is always good to access the Persistence layer repository via a service object.");
 		text.setFill(Color.BLACK);
-		text.setX(-text.getLayoutBounds().getWidth());
+		text.setX(primScreenBounds.getWidth());
 		text.setY(text.getLayoutBounds().getHeight());
 		/* text.setFill(Color.BROWN); */
 		/*
@@ -52,14 +52,14 @@ public class MarqueeText extends Application{
 		translateTransition = new TranslateTransition();
 		spHandler = new SpeedHandler(translateTransition);
 		playPause = new PlayPauseHandler(translateTransition);
-		
+		translateTransition.setInterpolator(Interpolator.LINEAR);
 		translateTransition.setDuration(Duration.millis(spHandler.getSpeed()));
 		translateTransition.setNode(text);
-		translateTransition.setByX(primScreenBounds.getWidth() + text.getLayoutBounds().getWidth());
+		translateTransition.setByX(-(primScreenBounds.getWidth() + text.getLayoutBounds().getWidth()));
 		translateTransition.setCycleCount(-1);
 		translateTransition.setAutoReverse(false);
 		translateTransition.play();
-		
+	
 		root = new Group(text);
 		scene = new Scene(root, 600, 600);
 		stage.addEventFilter(MouseEvent.MOUSE_CLICKED, playPause);
