@@ -14,29 +14,7 @@ import javafx.util.Duration;
 import javafx.scene.text.FontPosture; 
 import javafx.scene.text.FontWeight; 
 import javafx.scene.text.Font;
-import javafx.scene.control.MenuItem;
-import javafx.scene.text.TextFlow;
-import javafx.application.Application;
-import javafx.event.EventHandler;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.input.MouseButton;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 
-import javafx.scene.Scene; 
-import javafx.scene.control.*; 
-import javafx.scene.layout.*; 
-import javafx.event.ActionEvent; 
-import javafx.event.EventHandler; 
-import javafx.collections.*; 
-import javafx.stage.Stage; 
-import javafx.scene.text.Text.*; 
-import javafx.scene.paint.*; 
-import javafx.scene.text.*; 
 public class MarqueeText extends Application{
 	
 	private boolean paused = false;
@@ -134,6 +112,8 @@ public class MarqueeText extends Application{
 		stage.setAlwaysOnTop(true);
 		stage.setScene(scene);
 		stage.show();
+		
+		System.out.println("Hello world");
 	}
 	
 	public static void main(String args[]) {
