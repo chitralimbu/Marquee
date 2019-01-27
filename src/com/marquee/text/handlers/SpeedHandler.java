@@ -7,7 +7,7 @@ import javafx.animation.TranslateTransition;
 public class SpeedHandler implements EventHandler<ScrollEvent>{
 	
 	private TranslateTransition translateTransition;
-	private int speed = 4000;
+	private int speed = 25000;
 	
 	public SpeedHandler(TranslateTransition translateTransition) {
 		this.translateTransition = translateTransition;
@@ -15,10 +15,10 @@ public class SpeedHandler implements EventHandler<ScrollEvent>{
 	
 	@Override
 	public void handle(ScrollEvent event) {
-		if(event.getDeltaY() < 0 && speed > 0) {
-			speed -= 100;
-		}else if(event.getDeltaY() > 0){
-			speed += 100;
+		if(event.getDeltaY() < 0) {
+			speed += 1000;
+		}else if(event.getDeltaY() > 0 && speed > 0){
+			speed -= 1000;
 		}
 		System.out.println("Speed: " + speed);
 		translateTransition.stop();

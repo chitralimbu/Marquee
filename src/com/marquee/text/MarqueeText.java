@@ -1,14 +1,16 @@
 package com.marquee.text;
 
-import javafx.event.EventHandler;
-import javafx.scene.input.*;
-import javafx.application.Application; 
+import javafx.scene.input.MouseEvent;
+import javafx.scene.input.ScrollEvent;
+import javafx.application.Application;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Group; 
 import javafx.scene.Scene;
-//import javafx.scene.control.ContextMenu;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 import com.marquee.text.handlers.PlayPauseHandler;
 import com.marquee.text.handlers.SpeedHandler;
@@ -21,27 +23,25 @@ import javafx.scene.text.Font;
 
 public class MarqueeText extends Application{
 	
+	private Text text;
+	private TranslateTransition translateTransition;
+	private SpeedHandler spHandler;
+	private PlayPauseHandler playPause;
+	private Group root;
+	private Scene scene;
+	private Rectangle2D primScreenBounds = Screen.getPrimary().getVisualBounds();
+	Font font = Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 40);
+	
 	@Override
 	public void start(Stage stage) throws Exception {
 		//TextFlow textFlow = new TextFlow();
-		//ContextMenu contextMenu = new ContextMenu();
-		Text text = new Text();
-		Text text2 = new Text();
-		
-		text2.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 20));
-		text.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 20));
-		
-		text.setText("I'm using a TextFlow");
-		text2.setText("Hi I am text 2");
-		
-		text.setFill(Color.BLUEVIOLET);
-		text2.setFill(Color.BISQUE);
-		
+		text = new Text();
+		text.setFont(font);
+		text.setText("In our ProductController class, we only have the ProductRepository reference to access the Product domain object within the list method. But accessing ProductRepository directly from the ProductController is not the best practice, as it is always good to access the Persistence layer repository via a service object.");
+		text.setFill(Color.BLACK);
 		text.setX(-text.getLayoutBounds().getWidth());
-		text.setY(50);
+		text.setY(text.getLayoutBounds().getHeight());
 		/* text.setFill(Color.BROWN); */
-		
-		
 		/*
 		 * textFlow.getChildren().addAll(text, text2); textFlow.setLayoutX(100);
 		 * textFlow.setLayoutY(50);
@@ -49,33 +49,30 @@ public class MarqueeText extends Application{
 		 * 
 		 * System.out.println(textFlow.getWidth());
 		 */
-		
-		
-		TranslateTransition translateTransition = new TranslateTransition();
-		SpeedHandler spHandler = new SpeedHandler(translateTransition);
-		PlayPauseHandler playPause = new PlayPauseHandler(translateTransition);
+		translateTransition = new TranslateTransition();
+		spHandler = new SpeedHandler(translateTransition);
+		playPause = new PlayPauseHandler(translateTransition);
 		
 		translateTransition.setDuration(Duration.millis(spHandler.getSpeed()));
 		translateTransition.setNode(text);
-		translateTransition.setByX(text.getLayoutBounds().getWidth() + 600);
+		translateTransition.setByX(primScreenBounds.getWidth() + text.getLayoutBounds().getWidth());
 		translateTransition.setCycleCount(-1);
 		translateTransition.setAutoReverse(false);
 		translateTransition.play();
 		
-		//stage.addEventFilter(MouseEvent.MOUSE_CLICKED, eventHandler);
+		root = new Group(text);
+		scene = new Scene(root, 600, 600);
 		stage.addEventFilter(MouseEvent.MOUSE_CLICKED, playPause);
 		stage.addEventFilter(ScrollEvent.ANY, spHandler);
-		
-		Group root = new Group(text);
-		
-		Scene scene = new Scene(root, 600, 600);
-		
 		stage.setTitle("Sample application");
+		stage.setX(0);
+		stage.setY(primScreenBounds.getHeight() - text.getLayoutBounds().getHeight());
+		stage.setHeight(text.getLayoutBounds().getHeight() + 15);
+		stage.setWidth(primScreenBounds.getWidth());
+		stage.initStyle(StageStyle.UNDECORATED);
 		stage.setAlwaysOnTop(true);
 		stage.setScene(scene);
 		stage.show();
-		
-		System.out.println("Hello world");
 	}
 	
 	public static void main(String args[]) {
