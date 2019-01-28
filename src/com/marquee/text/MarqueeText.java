@@ -27,6 +27,7 @@ import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight; 
 import javafx.scene.text.Font;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.control.Label;
 import javafx.collections.ObservableList; 
 import javafx.geometry.Insets;
@@ -40,14 +41,14 @@ public class MarqueeText extends Application{
 	private Scene scene;
 	private Rectangle2D primScreenBounds = Screen.getPrimary().getVisualBounds();
 	private Font font = Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 30);
-	HBox hbox;
-	ObservableList<Node> list;
-	List<String> myObjects = Arrays.asList("Hello there", "Hi world", "Ticker tape");
+	private HBox hbox;
+	private ObservableList<Node> list;
+	private List<String> myObjects = Arrays.asList("Hello thereasdfasdfasdfasdfasdfasdfasdf", "Hi world", "Ticker tape");
 	
 	@Override
 	public void start(Stage stage) throws Exception {
 		//TextFlow textFlow = new TextFlow();
-		
+		BorderPane root = new BorderPane();
 		hbox = new HBox();
 		/* hbox.setSpacing(10); */
 		list = hbox.getChildren();
@@ -56,34 +57,35 @@ public class MarqueeText extends Application{
 			.forEach(text -> {
 				Label label3 = new Label(text);
 				label3.setFont(font);
-				label3.setStyle("-fx-background-color: blue;");
+				label3.setStyle("-fx-background-color: white;");
 				label3.setPadding(new Insets(5,10,5,10));
+				label3.setWrapText(false);
 				list.add(label3);
 			});
 		hbox.setStyle("-fx-background-color: white;");
-		System.out.println(calculateWidth());
-		System.out.println(calculateHeight());
-		scene = new Scene(hbox, Color.WHITE);
+		root.setStyle("-fx-background-color: white;");
+		root.setLayoutX(1500);
+		root.setBottom(hbox);
+		scene = new Scene(root, Color.WHITE);
 		translateTransition = new TranslateTransition();
 		spHandler = new SpeedHandler(translateTransition);
 		playPause = new PlayPauseHandler(translateTransition);
 		translateTransition.setInterpolator(Interpolator.LINEAR);
 		translateTransition.setDuration(Duration.millis(spHandler.getSpeed()));
 		translateTransition.setNode(hbox);
-		translateTransition.setByX(primScreenBounds.getWidth());
+		translateTransition.setByX(-(primScreenBounds.getWidth() + calculateWidth()));
 		translateTransition.setCycleCount(-1);
 		translateTransition.setAutoReverse(false);
 		translateTransition.play();	
+		
 		stage.addEventFilter(MouseEvent.MOUSE_CLICKED, playPause);
-		stage.addEventFilter(ScrollEvent.ANY, spHandler);
-		 
+		stage.addEventFilter(ScrollEvent.ANY, spHandler); 
 		stage.setTitle("Sample application");
 		stage.setX(0);
-		stage.setY(0);
-		stage.setHeight(primScreenBounds.getHeight());
+		stage.setY(0/* primScreenBounds.getHeight() */);
+		stage.setHeight(primScreenBounds.getHeight()/* calculateHeight() + 5 */);
 		stage.setWidth(primScreenBounds.getWidth());
 		stage.initStyle(StageStyle.UNDECORATED);
-		
 		stage.setAlwaysOnTop(true);
 		stage.setScene(scene);
 		stage.show();
@@ -93,7 +95,8 @@ public class MarqueeText extends Application{
 		return myObjects.stream()
 			.map(str -> {
 				Text text = new Text();
-				text.setText("Hello World");
+				text.setText(str);
+				text.setFont(font);
 				return text;
 			}).mapToDouble(txt -> txt.getLayoutBounds().getWidth())
 			.sum();
@@ -102,6 +105,7 @@ public class MarqueeText extends Application{
 	public double calculateHeight() {
 		Text text = new Text();
 		text.setText("Hi");
+		text.setFont(font);
 		return text.getLayoutBounds().getHeight();
 	}
 	
