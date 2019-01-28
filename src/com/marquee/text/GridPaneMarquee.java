@@ -37,7 +37,7 @@ import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
-public class MarqueeText extends Application{
+public class GridPaneMarquee extends Application{
 	
 	private Text text;
 	private TranslateTransition translateTransition;
