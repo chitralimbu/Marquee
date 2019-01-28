@@ -7,7 +7,7 @@ import javafx.animation.TranslateTransition;
 public class SpeedHandler implements EventHandler<ScrollEvent>{
 	
 	private TranslateTransition translateTransition;
-	private int speed = 30000;
+	private int speed = 3000;
 	
 	public SpeedHandler(TranslateTransition translateTransition) {
 		this.translateTransition = translateTransition;
