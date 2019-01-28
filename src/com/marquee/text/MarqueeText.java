@@ -15,6 +15,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.animation.Interpolator;
 
+import java.nio.file.attribute.PosixFilePermission;
 import java.util.Arrays;
 import java.util.List;
 
@@ -28,9 +29,12 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Font;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.TilePane;
 import javafx.scene.control.Label;
 import javafx.collections.ObservableList; 
 import javafx.geometry.Insets;
+import javafx.geometry.Orientation;
+import javafx.geometry.Pos;
 public class MarqueeText extends Application{
 	
 	private Text text;
@@ -41,17 +45,20 @@ public class MarqueeText extends Application{
 	private Scene scene;
 	private Rectangle2D primScreenBounds = Screen.getPrimary().getVisualBounds();
 	private Font font = Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 30);
-	private HBox hbox;
+	//private HBox hbox;
 	private ObservableList<Node> list;
 	private List<String> myObjects = Arrays.asList("Hello thereasdfasdfasdfasdfasdfasdfasdf", "Hi world", "Ticker tape");
 	
 	@Override
 	public void start(Stage stage) throws Exception {
-		//TextFlow textFlow = new TextFlow();
+		TilePane tilePane = new TilePane();
+		tilePane.setOrientation(Orientation.VERTICAL);
+		//tilePane.setTileAlignment(Pos.BOTTOM_LEFT);
+	    tilePane.setPrefRows(0); 
+	    tilePane.setPrefColumns(myObjects.size());
+		 
 		BorderPane root = new BorderPane();
-		hbox = new HBox();
-		/* hbox.setSpacing(10); */
-		list = hbox.getChildren();
+		list = tilePane.getChildren();
 		myObjects
 			.stream()
 			.forEach(text -> {
@@ -62,17 +69,18 @@ public class MarqueeText extends Application{
 				label3.setWrapText(false);
 				list.add(label3);
 			});
-		hbox.setStyle("-fx-background-color: white;");
+		
+		tilePane.setStyle("-fx-background-color: white;");
 		root.setStyle("-fx-background-color: white;");
 		root.setLayoutX(1500);
-		root.setBottom(hbox);
+		root.setBottom(tilePane);
 		scene = new Scene(root, Color.WHITE);
 		translateTransition = new TranslateTransition();
 		spHandler = new SpeedHandler(translateTransition);
 		playPause = new PlayPauseHandler(translateTransition);
 		translateTransition.setInterpolator(Interpolator.LINEAR);
 		translateTransition.setDuration(Duration.millis(spHandler.getSpeed()));
-		translateTransition.setNode(hbox);
+		translateTransition.setNode(tilePane);
 		translateTransition.setByX(-(primScreenBounds.getWidth() + calculateWidth()));
 		translateTransition.setCycleCount(-1);
 		translateTransition.setAutoReverse(false);
