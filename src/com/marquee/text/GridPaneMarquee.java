@@ -1,12 +1,10 @@
 package com.marquee.text;
 
-import com.marquee.httpclient.ApacheHttpClient;
-import com.marquee.model.ChangeObject;
-import com.marquee.model.ParseXML;
 import com.marquee.text.handlers.PlayPauseHandler;
 import com.marquee.text.handlers.SpeedHandler;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.IntStream;
 import javafx.scene.input.MouseEvent;
@@ -37,19 +35,16 @@ public class GridPaneMarquee extends Application{
 	private PlayPauseHandler playPause;
 	private Rectangle2D primScreenBounds = Screen.getPrimary().getVisualBounds();
 	private Font font = Font.font("verdana", FontWeight.SEMI_BOLD, FontPosture.REGULAR, 45);
-	private ApacheHttpClient ap = new ApacheHttpClient();
-	private ParseXML pXML = new ParseXML(ap.allXML());
-	private List<ChangeObject> allChanges;
+	private List<String> allChanges = Arrays.asList("Ashmita", "is", "a", "mean", "little", "girl");
 	private BorderPane bp;
 	private GridPane gridPane;
-	private static final String GREENCOLOR = "#228B22";
+	private static final String GREYCOLOR = "#DCDCDC";
 	private static final String BLUECOLOR = "#009ACD";
 	
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		primaryStage.setTitle("GridPane Experiment");
 		bp = new BorderPane();
-		allChanges = pXML.allObjects();
 		gridPane = new GridPane();
 		
 		instantiateGrids();
@@ -102,9 +97,9 @@ public class GridPaneMarquee extends Application{
 			label.setPadding(new Insets(5,10,5,10));
 			label.setFont(font);
 			
-			if(allChanges.get(i).getStart_date().isBefore(LocalDateTime.now())) {
-				label.setStyle("-fx-background-color: " + GREENCOLOR + "; -fx-text-fill: white ; -fx-border-color: white;");
-			}else if(i % 2 == 0) {
+			if(i % 2 != 0 ) {
+				label.setStyle("-fx-background-color: " + GREYCOLOR + "; -fx-text-fill: Black ;");
+			}else{
 				label.setStyle("-fx-background-color: " + BLUECOLOR + "; -fx-text-fill: white ;");
 			}
 			gridPane.add(label, i, 0);
