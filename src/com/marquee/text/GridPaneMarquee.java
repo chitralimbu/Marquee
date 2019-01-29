@@ -2,8 +2,6 @@ package com.marquee.text;
 
 import com.marquee.text.handlers.PlayPauseHandler;
 import com.marquee.text.handlers.SpeedHandler;
-
-import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.IntStream;
