@@ -33,7 +33,7 @@ public class GridPaneMarquee extends Application{
 	private PlayPauseHandler playPause;
 	private Rectangle2D primScreenBounds = Screen.getPrimary().getVisualBounds();
 	private Font font = Font.font("verdana", FontWeight.SEMI_BOLD, FontPosture.REGULAR, 45);
-	private List<String> allChanges = Arrays.asList("Ashmita", "is", "a", "mean", "little", "girl");
+	private List<String> allChanges = Arrays.asList("Testing");
 	private BorderPane bp;
 	private GridPane gridPane;
 	private static final String GREYCOLOR = "#DCDCDC";
